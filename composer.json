@@ -1,0 +1,36 @@
+{
+  "name": "bored-programmers/larabreadcrumb",
+  "description": "LaraBreadcrumb is a comprehensive Laravel package that provides an easy and flexible way to generate breadcrumbs for your Laravel applications. It supports automatic breadcrumb generation based on your routes, customization of breadcrumb titles, and hiding certain breadcrumbs.",
+  "keywords": [
+    "laravel",
+    "breadcrumbs",
+    "laravel breadcrumbs",
+    "navigation",
+    "laravel navigation",
+    "breadcrumb generation",
+    "route breadcrumbs"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "laravel/framework": "^10.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "BoredProgrammers\\LaraBreadcrumb\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Matěj Černý",
+      "email": "mat.cerny3@seznam.cz"
+    }
+  ],
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true,
+    "preferred-install": "dist",
+    "optimize-autoloader": true
+  }
+}
