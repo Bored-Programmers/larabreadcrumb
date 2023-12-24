@@ -101,16 +101,16 @@ submit a pull request. We have a few requirements for contributions:
 
 ## Changelog
 
-For a detailed history of changes, see [releases](https://github.com/Bored-Programmers/LaraBreadcrumb/releases) on GitHub.
+For a detailed history of changes, see [releases](https://github.com/Bored-Programmers/larabreadcrumb/releases) on GitHub.
 
 ## License
 
-This project is licensed under the [MIT license](https://github.com/Bored-Programmers/LaraBreadcrumb/blob/main/LICENSE.md).
+This project is licensed under the [MIT license](https://github.com/Bored-Programmers/larabreadcrumb/blob/main/LICENSE.md).
 
 ## Contact Information
 
 For any questions or concerns, please feel free to create
-a [discussion](https://github.com/Bored-Programmers/LaraBreadcrumb/discussions) on GitHub.
+a [discussion](https://github.com/Bored-Programmers/larabreadcrumb/discussions) on GitHub.
 
 ## Credits
 
