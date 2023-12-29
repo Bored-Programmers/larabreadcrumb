@@ -17,20 +17,24 @@ class BreadcrumbService
 
     private array $hiddenSegments = [];
 
-    public static function create()
+    /****************************************** MAIN FUNCTIONS ***********************************************/
+
+    public static function create(): static
     {
         return new static();
     }
 
-    public static function update()
+    public static function update(): static
     {
         return app(self::class);
     }
 
-    public static function generate()
+    public static function generate(): static
     {
         return app(self::class)->generateInstance();
     }
+
+    /****************************************** HELPER FUNCTIONS ***********************************************/
 
     public function hide(string|array $segments)
     {

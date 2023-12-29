@@ -7,8 +7,8 @@ LaraBreadcrumb is a Laravel package designed to simplify the creation of breadcr
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
-  - [Creating Breadcrumbs](#creating-breadcrumbs)
-  - [Displaying Breadcrumbs](#displaying-breadcrumbs)
+    - [Creating Breadcrumbs](#creating-breadcrumbs)
+    - [Displaying Breadcrumbs](#displaying-breadcrumbs)
 - [Advanced Usage](#advanced-usage)
 - [Contributing](#contributing)
 - [Changelog](#changelog)
@@ -32,63 +32,73 @@ composer require bored-programmers/larabreadcrumb
 
 ## Basic Usage
 
-### Creating Breadcrumbs
-
-```php
- $this->breadcrumbs = BreadcrumbService::createFromRequest()->generate();
-```
+By default, LaraBreadcrumb will try to generate breadcrumbs automatically based on the route.
+It will use the route parameter values as the title of the breadcrumb.
+So for example, if you have a route like this: `admin/customers/1`, it will generate a breadcrumb like this:
+`Admin / Customers / 1`.
 
 ### Displaying Breadcrumbs
 
-This is an example of how to display breadcrumbs. You can customize the rendering logic to suit your needs.
+```blade
+<x-larabreadcrumb::breadcrumb/>
+```
+
+### Customizing Breadcrumbs
+
+`Route::get('/users/{customer}')`
+
+This route will generate a breadcrumb like this: `Users / 1`.
+If you want to customize the breadcrumb, you can use the `BreadcrumbService` class like this:
 
 ```php
-@props([
-    /** @var \App\Services\BreadcrumbLink[] */
-    'breadcrumbs' => []
+use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
+
+BreadcrumbService::update()
+    ->setAccessors([
+        'customer' => fn($model) => $model->name
+        'customer' => fn(User $user) => $user->name
+        'customer' => 'name'
+    ]);
 ])
-
-<div style="display: flex">
-    @foreach ($breadcrumbs as $breadcrumb)
-        <a
-                style="white-space: pre"
-                href="{{ $breadcrumb->url }}"
-        >{{ str($breadcrumb->title)->ucfirst() }} @if($loop->remaining)> @endif</a>
-    @endforeach
-</div>
 ```
 
-## Advanced Usage
+This will generate a breadcrumb like this: `Users / John`. Key `customer` is the name of the route parameter, value is
+the accessor. You can use a closure or a string.
 
-You can customize the title of the breadcrumb by passing a callback to the `createFromRequest()` method.
-The key of the array is the name of the route parameter and the value is a callback that accepts the route model and returns the
-title of the breadcrumb.
+### Prefixing Breadcrumbs
+
+By default, breadcrumb doesn't have any prefix. If you want to add a prefix to the breadcrumb, you can use the
+`BreadcrumbService` class like this:
 
 ```php
-// Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
 
-$breadcrumbs = BreadcrumbService::createFromRequest([
-            'user' => fn(User $user) => $user->full_name,
-        ])->generate();
+# Route::get('/users/{user}/comments/{comment}');
+
+BreadcrumbService::update()
+    ->setPrefix('breadcrumb');
+])
 ```
+
+This will generate a breadcrumb like this: `breadcrumb.users / 1 / breadcrumb.comments / 1`.
+**It is recommended to use a prefix**, because it will prevent conflicts with translations.
+For example if you have route
+`Route::get('admin/users')`, it will generate a breadcrumb like this: `admin / users`. It is not a problem, until you
+have translation file `admin.php`. Then it will give you an error `array to string conversion`.
+
+### Hide Breadcrumbs
 
 You can also hide certain breadcrumbs.
 
 ```php
 // Route::get('/users/{user}/comments/{comment}', [UserController::class, 'show'])->name('users.show');
 
- $breadcrumbs = BreadcrumbService::createFromRequest()->hide('comments')->generate();
+ $breadcrumbs = BreadcrumbService::update()->hide('comments');
+ $breadcrumbs = BreadcrumbService::update()->hide(['comments', 'users']);
 ```
 
-This will hide the `comments` from breadcrumb. The result will be `Users / {user} / {comment}`.
-The `hide` method accepts a string or an array of strings `->hide(['comments', 'users', etc...])`.
-
-__Note:__
-
-_If you don't pass any callbacks to the `createFromRequest()` method, the package will try to generate breadcrumbs
-automatically. It will use the route parameter values as the title of the breadcrumb.
-So for example, if you have a route like this: `admin/customers/132321`, it will generate a breadcrumb like this:
-`Admin / Customers / 132321`._
+This will hide the `comments` from breadcrumb.
+The first result will be `Users / {user} / {comment}`, second will be `{user} / {comment}`.
 
 ## Contributing
 
@@ -101,11 +111,13 @@ submit a pull request. We have a few requirements for contributions:
 
 ## Changelog
 
-For a detailed history of changes, see [releases](https://github.com/Bored-Programmers/larabreadcrumb/releases) on GitHub.
+For a detailed history of changes, see [releases](https://github.com/Bored-Programmers/larabreadcrumb/releases) on
+GitHub.
 
 ## License
 
-This project is licensed under the [MIT license](https://github.com/Bored-Programmers/larabreadcrumb/blob/main/LICENSE.md).
+This project is licensed under
+the [MIT license](https://github.com/Bored-Programmers/larabreadcrumb/blob/main/LICENSE.md).
 
 ## Contact Information
 
