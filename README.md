@@ -100,6 +100,14 @@ You can also hide certain breadcrumbs.
 This will hide the `comments` from breadcrumb.
 The first result will be `Users / {user} / {comment}`, second will be `{user} / {comment}`.
 
+## Publishing views
+
+If you want to customize the views, you can publish them with this command:
+
+```bash
+php artisan vendor:publish --tag=larabreadcrumb-views
+```
+
 ## Contributing
 
 We welcome contributions to LaraBreadcrumb. If you'd like to contribute, please fork the repository, make your changes,
