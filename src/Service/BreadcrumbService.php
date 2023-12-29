@@ -21,6 +21,11 @@ class BreadcrumbService
     {
     }
 
+    public static function create()
+    {
+        return new static();
+    }
+
     public static function generate()
     {
         $instance = app(self::class);
