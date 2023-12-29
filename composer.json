@@ -6,9 +6,11 @@
     "breadcrumbs",
     "laravel breadcrumbs",
     "navigation",
+    "laravel automatic breadcrumbs",
     "laravel navigation",
     "breadcrumb generation",
-    "route breadcrumbs"
+    "route breadcrumbs",
+    "automatic breadcrumbs"
   ],
   "type": "library",
   "license": "MIT",
@@ -32,5 +34,12 @@
     "sort-packages": true,
     "preferred-install": "dist",
     "optimize-autoloader": true
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "BoredProgrammers\\LaraBreadcrumb\\Providers\\LaraBreadcrumbServiceProvider"
+      ]
+    }
   }
 }

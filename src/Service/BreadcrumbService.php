@@ -11,24 +11,115 @@ use Illuminate\Support\Str;
 class BreadcrumbService
 {
 
-    protected string $route;
+    private array $accessors;
 
-    protected array $accessors;
+    private ?string $prefix = null;
 
-    protected array $hiddenSegments = [];
+    private array $hiddenSegments = [];
 
-    public function __construct(string $route, array $accesors = [])
+    /****************************************** MAIN FUNCTIONS ***********************************************/
+
+    public static function create(): static
     {
-        $this->route = $route;
-        $this->accessors = $accesors;
+        return new static();
     }
 
-    public static function createFromRequest(array $accesors = [])
+    public static function update(): static
     {
-        return new static(request()->path(), $accesors);
+        return app(self::class);
     }
 
-    public function generate()
+    public static function generate(): static
+    {
+        return app(self::class)->generateInstance();
+    }
+
+    /****************************************** HELPER FUNCTIONS ***********************************************/
+
+    public function hide(string|array $segments)
+    {
+        if (is_array($segments)) {
+            foreach ($segments as $segment) {
+                $this->hide($segment);
+            }
+        } else {
+            $this->hiddenSegments[] = $segments;
+        }
+
+        return $this;
+    }
+
+    /****************************************** GETTERS && SETTERS ***********************************************/
+
+    public function setPrefix(string $prefix): static
+    {
+        $this->prefix = $prefix;
+
+        return $this;
+    }
+
+    public function getPrefix()
+    {
+        return $this->prefix;
+    }
+
+    public function getAccessors(): array
+    {
+        return $this->accessors;
+    }
+
+    public function setAccessors(array $accessors): static
+    {
+        $this->accessors = $accessors;
+
+        return $this;
+    }
+
+    public function addAccessor($accessor): static
+    {
+        $this->accessors[] = $accessor;
+
+        return $this;
+    }
+
+    /************************************************ PRIVATE ************************************************/
+
+    private function generateBreadcrumb($segment, $index, $parameters, &$accumulatedUrl)
+    {
+        if (in_array($segment, $this->hiddenSegments)) {
+            return null;
+        }
+
+        if (Str::contains($segment, '{')) {
+            $parameterName = Str::between($segment, '{', '}');
+            $parameterValue = $parameters[$parameterName];
+
+            $accumulatedUrl .= '/' . request()->segment($index + 1);
+
+            $accessor = $this->getAccessors()[$parameterName] ?? null;
+
+            if ($accessor) {
+                try {
+                    if ($accessor instanceof Closure) {
+                        $segment = $accessor($parameterValue);
+                    } else {
+                        $segment = $parameterValue->{$accessor};
+                    }
+                } catch (\Throwable) {
+                    throw new BreadcrumbException("Parameter '$parameterName' does not have accessor you defined.");
+                }
+            } else {
+                $segment = $this->getPrefix() ? ($this->getPrefix() . '.' . $parameterValue) : $parameterValue;
+            }
+        } else {
+            $accumulatedUrl .= '/' . $segment;
+            $segment = $this->getPrefix() ? ($this->getPrefix() . '.' . $segment) : $segment;
+        }
+
+        return new BreadcrumbLink($segment, $accumulatedUrl);
+    }
+
+    private function generateInstance()
     {
         $route = request()->route();
         $segments = explode('/', trim($route->uri(), '/'));
@@ -46,53 +137,6 @@ class BreadcrumbService
         }
 
         return $breadcrumbs;
-    }
-
-    public function hide(string|array $segments)
-    {
-        if (is_array($segments)) {
-            foreach ($segments as $segment) {
-                $this->hide($segment);
-            }
-        } else {
-            $this->hiddenSegments[] = $segments;
-        }
-
-        return $this;
-    }
-
-    private function generateBreadcrumb($segment, $index, $parameters, &$accumulatedUrl)
-    {
-        if (in_array($segment, $this->hiddenSegments)) {
-            return null;
-        }
-
-        if (Str::contains($segment, '{')) {
-            $parameterName = Str::between($segment, '{', '}');
-            $parameterValue = $parameters[$parameterName];
-
-            $accumulatedUrl .= '/' . request()->segment($index + 1);
-
-            $accessor = $this->accessors[$parameterName] ?? null;
-
-            if ($accessor) {
-                try {
-                    if ($accessor instanceof Closure) {
-                        $segment = $accessor($parameterValue);
-                    } else {
-                        $segment = $parameterValue->{$accessor};
-                    }
-                } catch (\Throwable) {
-                    throw new BreadcrumbException("Parameter '$parameterName' does not have accessor you defined.");
-                }
-            } else {
-                $segment = $parameterValue;
-            }
-        } else {
-            $accumulatedUrl .= '/' . $segment;
-        }
-
-        return new BreadcrumbLink($segment, $accumulatedUrl);
     }
 
 }
