@@ -94,14 +94,10 @@ class BreadcrumbService
                     throw new BreadcrumbException("Parameter '$parameterName' does not have accessor you defined.");
                 }
             } else {
-                $segment = $parameterValue;
+                $segment = $this->getPrefix() ? $this->getPrefix() . '.' . $parameterValue : $parameterValue;
             }
         } else {
             $accumulatedUrl .= '/' . $segment;
-        }
-
-        if ($this->getPrefix()) {
-            return new BreadcrumbLink($this->getPrefix() . '.' . $segment, $accumulatedUrl);
         }
 
         return new BreadcrumbLink($segment, $accumulatedUrl);
