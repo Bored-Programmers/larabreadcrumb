@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class BreadcrumbService
 {
 
-    private array $accessors;
+    private array $accessors = [];
 
     private ?string $prefix = null;
 
