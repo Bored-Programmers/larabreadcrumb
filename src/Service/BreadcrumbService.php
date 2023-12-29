@@ -19,15 +19,14 @@ class BreadcrumbService
 
     private array $hiddenSegments = [];
 
-    public function __construct(string $route, array $accesors = [])
+    public function __construct(string $route)
     {
         $this->route = $route;
-        $this->accessors = $accesors;
     }
 
-    public static function createFromRequest(array $accesors = [])
+    public static function createFromRequest()
     {
-        return new static(request()->path(), $accesors);
+        return new static(request()->path());
     }
 
     public static function generate()
@@ -64,6 +63,16 @@ class BreadcrumbService
         return $this->prefix;
     }
 
+    public function getAccessors(): array
+    {
+        return $this->accessors;
+    }
+
+    public function setAccessors(array $accessors): void
+    {
+        $this->accessors = $accessors;
+    }
+
     /************************************************ PRIVATE ************************************************/
 
     private function generateBreadcrumb($segment, $index, $parameters, &$accumulatedUrl)
@@ -78,7 +87,7 @@ class BreadcrumbService
 
             $accumulatedUrl .= '/' . request()->segment($index + 1);
 
-            $accessor = $this->accessors[$parameterName] ?? null;
+            $accessor = $this->getAccessors()[$parameterName] ?? null;
 
             if ($accessor) {
                 try {
