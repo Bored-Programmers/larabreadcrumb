@@ -11,22 +11,14 @@ use Illuminate\Support\Str;
 class BreadcrumbService
 {
 
-    private string $route;
-
     private array $accessors;
 
     private ?string $prefix = null;
 
     private array $hiddenSegments = [];
 
-    public function __construct(string $route)
+    public function __construct()
     {
-        $this->route = $route;
-    }
-
-    public static function createFromRequest()
-    {
-        return new static(request()->path());
     }
 
     public static function generate()
@@ -51,7 +43,7 @@ class BreadcrumbService
 
     /****************************************** GETTERS && SETTERS ***********************************************/
 
-    public function setPrefix(string $prefix)
+    public function setPrefix(string $prefix): static
     {
         $this->prefix = $prefix;
 
@@ -68,9 +60,11 @@ class BreadcrumbService
         return $this->accessors;
     }
 
-    public function setAccessors(array $accessors): void
+    public function setAccessors(array $accessors): static
     {
         $this->accessors = $accessors;
+
+        return $this;
     }
 
     /************************************************ PRIVATE ************************************************/

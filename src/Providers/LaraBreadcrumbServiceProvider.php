@@ -11,7 +11,7 @@ class LaraBreadcrumbServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(BreadcrumbService::class, function () {
-            return BreadcrumbService::createFromRequest();
+            return new BreadcrumbService();
         });
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'larabreadcrumb');
