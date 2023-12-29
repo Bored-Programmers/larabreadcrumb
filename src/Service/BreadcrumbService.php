@@ -117,8 +117,12 @@ class BreadcrumbService
                     } else {
                         $segment = $parameterValue->{$accessor};
                     }
-                } catch (\Throwable) {
-                    throw new BreadcrumbException("Parameter '$parameterName' does not have accessor you defined.");
+                } catch (\Throwable $e) {
+                    $message = $e->getMessage();
+
+                    throw new BreadcrumbException(
+                        "Parameter '$parameterName' does not have accessor you defined. $message",
+                    );
                 }
             } else {
                 $segment = $this->getPrefix() ? ($this->getPrefix() . '.' . $parameterValue) : $parameterValue;
