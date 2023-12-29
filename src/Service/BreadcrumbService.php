@@ -17,20 +17,19 @@ class BreadcrumbService
 
     private array $hiddenSegments = [];
 
-    public function __construct()
-    {
-    }
-
     public static function create()
     {
         return new static();
     }
 
+    public static function update()
+    {
+        return app(self::class);
+    }
+
     public static function generate()
     {
-        $instance = app(self::class);
-
-        return $instance->generateInstance();
+        return app(self::class)->generateInstance();
     }
 
     public function hide(string|array $segments)
@@ -68,6 +67,13 @@ class BreadcrumbService
     public function setAccessors(array $accessors): static
     {
         $this->accessors = $accessors;
+
+        return $this;
+    }
+
+    public function addAccessor($accessor): static
+    {
+        $this->accessors[] = $accessor;
 
         return $this;
     }
