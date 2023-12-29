@@ -29,7 +29,10 @@ class BreadcrumbService
         return app(self::class);
     }
 
-    public static function generate(): static
+    /**
+     * @return BreadcrumbLink[]
+     */
+    public static function generate(): array
     {
         return app(self::class)->generateInstance();
     }
@@ -84,6 +87,15 @@ class BreadcrumbService
 
     /************************************************ PRIVATE ************************************************/
 
+    /**
+     * @param $segment
+     * @param $index
+     * @param $parameters
+     * @param $accumulatedUrl
+     *
+     * @return BreadcrumbLink|null
+     * @throws BreadcrumbException
+     */
     private function generateBreadcrumb($segment, $index, $parameters, &$accumulatedUrl)
     {
         if (in_array($segment, $this->hiddenSegments)) {
@@ -119,7 +131,10 @@ class BreadcrumbService
         return new BreadcrumbLink($segment, $accumulatedUrl);
     }
 
-    private function generateInstance()
+    /**
+     * @return BreadcrumbLink[]
+     */
+    private function generateInstance(): array
     {
         $route = request()->route();
         $segments = explode('/', trim($route->uri(), '/'));
