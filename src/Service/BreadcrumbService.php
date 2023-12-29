@@ -30,24 +30,11 @@ class BreadcrumbService
         return new static(request()->path(), $accesors);
     }
 
-    public function generate()
+    public static function generate()
     {
-        $route = request()->route();
-        $segments = explode('/', trim($route->uri(), '/'));
-        $parameters = $route->parameters();
+        $instance = app(self::class);
 
-        $breadcrumbs = [];
-        $accumulatedUrl = '';
-
-        foreach ($segments as $index => $segment) {
-            $breadcrumb = $this->generateBreadcrumb($segment, $index, $parameters, $accumulatedUrl);
-
-            if ($breadcrumb) {
-                $breadcrumbs[] = $breadcrumb;
-            }
-        }
-
-        return $breadcrumbs;
+        return $instance->generateInstance();
     }
 
     public function hide(string|array $segments)
@@ -111,6 +98,26 @@ class BreadcrumbService
         }
 
         return new BreadcrumbLink($this->getPrefix() . '.' . $segment, $accumulatedUrl);
+    }
+
+    private function generateInstance()
+    {
+        $route = request()->route();
+        $segments = explode('/', trim($route->uri(), '/'));
+        $parameters = $route->parameters();
+
+        $breadcrumbs = [];
+        $accumulatedUrl = '';
+
+        foreach ($segments as $index => $segment) {
+            $breadcrumb = $this->generateBreadcrumb($segment, $index, $parameters, $accumulatedUrl);
+
+            if ($breadcrumb) {
+                $breadcrumbs[] = $breadcrumb;
+            }
+        }
+
+        return $breadcrumbs;
     }
 
 }

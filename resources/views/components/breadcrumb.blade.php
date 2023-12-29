@@ -4,7 +4,7 @@
 ])
 
 <div style="display: flex">
-    @foreach ($breadcrumbs as $breadcrumb)
+    @foreach (app(BreadcrumbService::class)->generate() as $breadcrumb)
         <a
                 style="white-space: pre"
                 href="{{ $breadcrumb->url }}"

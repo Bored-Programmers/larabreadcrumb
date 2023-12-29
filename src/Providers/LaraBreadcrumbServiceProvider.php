@@ -2,6 +2,7 @@
 
 namespace BoredProgrammers\LaraBreadcrumb\Providers;
 
+use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
 use Illuminate\Support\ServiceProvider;
 
 class LaraBreadcrumbServiceProvider extends ServiceProvider
@@ -9,6 +10,10 @@ class LaraBreadcrumbServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        $this->app->singleton(BreadcrumbService::class, function ($app) {
+            return BreadcrumbService::createFromRequest();
+        });
+
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'larabreadcrumb');
 
         $this->publishes([
