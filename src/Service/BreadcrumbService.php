@@ -97,7 +97,11 @@ class BreadcrumbService
             $accumulatedUrl .= '/' . $segment;
         }
 
-        return new BreadcrumbLink($this->getPrefix() . '.' . $segment, $accumulatedUrl);
+        if ($this->getPrefix()) {
+            return new BreadcrumbLink($this->getPrefix() . '.' . $segment, $accumulatedUrl);
+        }
+
+        return new BreadcrumbLink($segment, $accumulatedUrl);
     }
 
     private function generateInstance()

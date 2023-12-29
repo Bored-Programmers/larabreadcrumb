@@ -10,7 +10,7 @@ class LaraBreadcrumbServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->app->singleton(BreadcrumbService::class, function ($app) {
+        $this->app->singleton(BreadcrumbService::class, function () {
             return BreadcrumbService::createFromRequest();
         });
 

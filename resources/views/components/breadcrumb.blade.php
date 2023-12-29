@@ -4,7 +4,7 @@
 ])
 
 <div style="display: flex">
-    @foreach (app(BreadcrumbService::class)->generate() as $breadcrumb)
+    @foreach (app(\BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService::class)->generate() as $breadcrumb)
         <a
                 style="white-space: pre"
                 href="{{ $breadcrumb->url }}"
