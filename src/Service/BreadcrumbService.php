@@ -103,6 +103,7 @@ class BreadcrumbService
             }
         } else {
             $accumulatedUrl .= '/' . $segment;
+            $segment = $this->getPrefix() ? ($this->getPrefix() . '.' . $segment) : $segment;
         }
 
         return new BreadcrumbLink($segment, $accumulatedUrl);
