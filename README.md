@@ -93,7 +93,7 @@ have translation file `admin.php`. Then it will give you an error `array to stri
 You can also hide certain breadcrumbs.
 
 ```php
-// Route::get('/users/{user}/comments/{comment}', [UserController::class, 'show'])->name('users.show');
+// Route::get('/users/{user}/comments/{comment}');
 
  $breadcrumbs = BreadcrumbService::update()->hide('comments');
  $breadcrumbs = BreadcrumbService::update()->hide(['comments', 'users']);
