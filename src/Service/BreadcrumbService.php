@@ -5,6 +5,7 @@ namespace BoredProgrammers\LaraBreadcrumb\Service;
 use BoredProgrammers\LaraBreadcrumb\Exception\BreadcrumbException;
 use BoredProgrammers\LaraBreadcrumb\Model\BreadcrumbLink;
 use Closure;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
@@ -125,7 +126,11 @@ class BreadcrumbService
                     );
                 }
             } else {
-                $segment = $this->getPrefix() ? ($this->getPrefix() . '.' . $parameterValue) : $parameterValue;
+                if ($parameterValue instanceof Model) {
+                    $segment = $parameterValue->getKey();
+                } else {
+                    $segment = $this->getPrefix() ? ($this->getPrefix() . '.' . $parameterValue) : $parameterValue;
+                }
             }
         } else {
             $accumulatedUrl .= '/' . $segment;
