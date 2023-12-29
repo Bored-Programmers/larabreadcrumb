@@ -11,11 +11,13 @@ use Illuminate\Support\Str;
 class BreadcrumbService
 {
 
-    protected string $route;
+    private string $route;
 
-    protected array $accessors;
+    private array $accessors;
 
-    protected array $hiddenSegments = [];
+    private ?string $prefix = null;
+
+    private array $hiddenSegments = [];
 
     public function __construct(string $route, array $accesors = [])
     {
@@ -61,6 +63,22 @@ class BreadcrumbService
         return $this;
     }
 
+    /****************************************** GETTERS && SETTERS ***********************************************/
+
+    public function setPrefix(string $prefix)
+    {
+        $this->prefix = $prefix;
+
+        return $this;
+    }
+
+    public function getPrefix()
+    {
+        return $this->prefix;
+    }
+
+    /************************************************ PRIVATE ************************************************/
+
     private function generateBreadcrumb($segment, $index, $parameters, &$accumulatedUrl)
     {
         if (in_array($segment, $this->hiddenSegments)) {
@@ -92,7 +110,7 @@ class BreadcrumbService
             $accumulatedUrl .= '/' . $segment;
         }
 
-        return new BreadcrumbLink($segment, $accumulatedUrl);
+        return new BreadcrumbLink($this->getPrefix() . '.' . $segment, $accumulatedUrl);
     }
 
 }
