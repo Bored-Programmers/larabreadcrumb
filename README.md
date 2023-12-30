@@ -7,7 +7,7 @@ __NOTE__
 This was my first try of using a laravel containers and services. If you have any suggestions, please let me know,
 I'd like to improve this code.
 
-[![Laravel Version](https://img.shields.io/static/v1?label=laravel&message=%E2%89%A510.0&color=0078BE&logo=laravel&style=flat-square)](https://laravel.com)
+[![Laravel Version](https://img.shields.io/static/v1?label=laravel&message=%E2%89%A510.0&color=0078BE&logo=laravel)](https://laravel.com)
 [![Version](http://poser.pugx.org/bored-programmers/larabreadcrumb/version)](https://packagist.org/packages/bored-programmers/larabreadcrumb)
 [![Total Downloads](http://poser.pugx.org/bored-programmers/larabreadcrumb/downloads)](https://packagist.org/packages/bored-programmers/larabreadcrumb)
 [![License](http://poser.pugx.org/bored-programmers/larabreadcrumb/license)](https://packagist.org/packages/bored-programmers/larabreadcrumb)
