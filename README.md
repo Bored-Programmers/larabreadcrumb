@@ -7,10 +7,11 @@ __NOTE__
 This was my first try of using a laravel containers and services. If you have any suggestions, please let me know,
 I'd like to improve this code.
 
-[![Latest Stable Version](https://poser.pugx.org/bored-programmers/larabreadcrumb/v)](//packagist.org/packages/bored-programmers/larabreadcrumb)
-[![Total Downloads](https://poser.pugx.org/bored-programmers/larabreadcrumb/downloads)](//packagist.org/packages/bored-programmers/larabreadcrumb)
-[![License](https://poser.pugx.org/bored-programmers/larabreadcrumb/license)](//packagist.org/packages/bored-programmers/larabreadcrumb)
-[![PHP Version Require](https://poser.pugx.org/bored-programmers/larabreadcrumb/require/php)](//packagist.org/packages/bored-programmers/larabreadcrumb)
+[![Laravel Version](https://img.shields.io/static/v1?label=laravel&message=%E2%89%A510.0&color=0078BE&logo=laravel&style=flat-square)](https://laravel.com)
+[![Version](http://poser.pugx.org/bored-programmers/larabreadcrumb/version)](https://packagist.org/packages/bored-programmers/larabreadcrumb)
+[![Total Downloads](http://poser.pugx.org/bored-programmers/larabreadcrumb/downloads)](https://packagist.org/packages/bored-programmers/larabreadcrumb)
+[![License](http://poser.pugx.org/bored-programmers/larabreadcrumb/license)](https://packagist.org/packages/bored-programmers/larabreadcrumb)
+[![PHP Version Require](http://poser.pugx.org/bored-programmers/larabreadcrumb/require/php)](https://packagist.org/packages/bored-programmers/larabreadcrumb)
 
 ## Table of Contents
 
