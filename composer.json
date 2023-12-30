@@ -15,7 +15,8 @@
   "type": "library",
   "license": "MIT",
   "require": {
-    "laravel/framework": "^10.0"
+    "laravel/framework": "^10.0",
+    "php": "^8.1"
   },
   "autoload": {
     "psr-4": {

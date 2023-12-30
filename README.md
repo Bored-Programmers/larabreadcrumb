@@ -2,6 +2,16 @@
 
 LaraBreadcrumb is a Laravel package designed to simplify the creation of breadcrumbs in your Laravel applications.
 
+__NOTE__
+
+This was my first try of using a laravel containers and services. If you have any suggestions, please let me know,
+I'd like to improve this code.
+
+[![Latest Stable Version](https://poser.pugx.org/bored-programmers/larabreadcrumb/v)](//packagist.org/packages/bored-programmers/larabreadcrumb)
+[![Total Downloads](https://poser.pugx.org/bored-programmers/larabreadcrumb/downloads)](//packagist.org/packages/bored-programmers/larabreadcrumb)
+[![License](https://poser.pugx.org/bored-programmers/larabreadcrumb/license)](//packagist.org/packages/bored-programmers/larabreadcrumb)
+[![PHP Version Require](https://poser.pugx.org/bored-programmers/larabreadcrumb/require/php)](//packagist.org/packages/bored-programmers/larabreadcrumb)
+
 ## Table of Contents
 
 - [Requirements](#requirements)
