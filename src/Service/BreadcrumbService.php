@@ -20,6 +20,12 @@ class BreadcrumbService
 
     private array $disabledSegments = [];
 
+    private array $translatedSegments = [];
+
+    private array $nonTranslatedSegments = [];
+
+    private bool $translateAll = false;
+
     public static function create(): static
     {
         return new static();
@@ -57,16 +63,37 @@ class BreadcrumbService
         return $this;
     }
 
-    public function hide(string|array $segments)
+    public function hide(string|array $segments): static
     {
         $this->addSegments($segments, $this->hiddenSegments);
 
         return $this;
     }
 
-    public function disable(string|array $segments)
+    public function disable(string|array $segments): static
     {
         $this->addSegments($segments, $this->disabledSegments);
+
+        return $this;
+    }
+
+    public function translate(string|array $segments): static
+    {
+        $this->addSegments($segments, $this->translatedSegments);
+
+        return $this;
+    }
+
+    public function dontTranslate(string|array $segments): static
+    {
+        $this->addSegments($segments, $this->nonTranslatedSegments);
+
+        return $this;
+    }
+
+    public function translateAll(bool $translateAll = true): static
+    {
+        $this->translateAll = $translateAll;
 
         return $this;
     }
@@ -84,6 +111,9 @@ class BreadcrumbService
         }
     }
 
+    /**
+     * @throws BreadcrumbException
+     */
     private function generateBreadcrumbLink($segment, $index, $parameters, &$accumulatedUrl): ?BreadcrumbLink
     {
         if (in_array($segment, $this->hiddenSegments)) {
@@ -93,9 +123,16 @@ class BreadcrumbService
         $disableSegment = in_array($segment, $this->disabledSegments);
         $segment = $this->processSegment($segment, $index, $parameters, $accumulatedUrl);
 
-        return new BreadcrumbLink($segment, $disableSegment ? null : $accumulatedUrl);
+        return new BreadcrumbLink(
+            title: $segment,
+            url: $disableSegment ? null : $accumulatedUrl,
+            translate: $this->isTranslatableSegment($segment),
+        );
     }
 
+    /**
+     * @throws BreadcrumbException
+     */
     private function processSegment($segment, $index, $parameters, &$accumulatedUrl)
     {
         if (Str::contains($segment, '{')) {
@@ -139,6 +176,7 @@ class BreadcrumbService
 
     /**
      * @return BreadcrumbLink[]
+     * @throws BreadcrumbException
      */
     private function generateInstance(): array
     {
@@ -158,6 +196,17 @@ class BreadcrumbService
         }
 
         return $breadcrumbs;
+    }
+
+    private function isTranslatableSegment($segment): bool
+    {
+        $shouldTranslateAll = $this->translateAll;
+        $isSegmentInTranslatable = in_array($segment, $this->translatedSegments);
+        $isSegmentInNonTranslatable = in_array($segment, $this->nonTranslatedSegments);
+
+        $translateSegment = ($shouldTranslateAll || $isSegmentInTranslatable) && !$isSegmentInNonTranslatable;
+
+        return $translateSegment;
     }
 
 }

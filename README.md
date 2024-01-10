@@ -182,6 +182,51 @@ use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
 After this, you won't be able to click on `comment` breadcrumb in the first example and on `user` and `comment` in
 the second example.
 
+You can add the translation options to the `README.md` file under a new section titled "Translating Breadcrumbs". Here's
+how you can do it:
+
+### Translating Breadcrumbs
+
+You can translate certain breadcrumbs or all breadcrumbs by default.
+
+```php
+use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
+
+// Translate certain segments
+BreadcrumbService::update()->translate('users');
+BreadcrumbService::update()->translate(['users', 'comments']);
+
+// Translate all segments by default
+BreadcrumbService::update()->translateAll();
+```
+
+If you want to translate all breadcrumbs but don't want to translate certain segments, you can use the `dontTranslate`
+method.
+
+```php
+use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
+
+BreadcrumbService::update()->translateAll(true / false);
+
+// Don't translate certain segments
+BreadcrumbService::update()->dontTranslate('users');
+BreadcrumbService::update()->dontTranslate(['users', 'comments']);
+```
+
+This will ensure that the 'users' segment is not translated in the first example and 'users' and 'comments' segments are
+not translated in the second example, even if `translateAll` is set to `true`.
+
+If you want to translate dynamic segments, you must use curly braces `{}`.
+
+```php
+use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
+
+// Route::get('/users/{user}/comments/{comment}');
+
+BreadcrumbService::update()->translate('{user}');
+BreadcrumbService::update()->translate(['{user}', '{comment}']);
+```
+
 ## Publishing views
 
 If you want to customize the views, you can publish them with this command:

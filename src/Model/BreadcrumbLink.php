@@ -9,10 +9,13 @@ class BreadcrumbLink
 
     public ?string $url;
 
-    public function __construct(string $title, ?string $url)
+    public bool $translate;
+
+    public function __construct(string $title, ?string $url, bool $translate)
     {
         $this->title = $title;
         $this->url = $url;
+        $this->translate = $translate;
     }
 
 }
