@@ -206,7 +206,7 @@ method.
 ```php
 use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
 
-BreadcrumbService::update()->translateAll(true / false);
+BreadcrumbService::update()->translateAll(true);
 
 // Don't translate certain segments
 BreadcrumbService::update()->dontTranslate('users');
