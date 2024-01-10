@@ -104,7 +104,7 @@ class BreadcrumbService
 
         $accumulatedUrl .= '/' . $segment;
 
-        return $this->getPrefix() ? ($this->getPrefix() . '.' . $segment) : $segment;
+        return $this->prefix ? ($this->prefix . '.' . $segment) : $segment;
     }
 
     /**
@@ -123,7 +123,7 @@ class BreadcrumbService
         }
 
         return $parameterValue instanceof Model ? $parameterValue->getKey()
-            : $this->getPrefix() . '.' . $parameterValue;
+            : $this->prefix . '.' . $parameterValue;
     }
 
     private function processAccessor($accessor, $parameterValue, $parameterName)
