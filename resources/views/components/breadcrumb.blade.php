@@ -1,5 +1,5 @@
 <div style="display: flex">
-    @foreach (app(\BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService::class)->generate() as $breadcrumb)
+    @foreach (\BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService::generate() as $breadcrumb)
         @php
             if ($breadcrumb->translate) {
                 $title = str(__($breadcrumb->title))->ucfirst();
