@@ -1,11 +1,11 @@
 # LaraBreadcrumb
 
-LaraBreadcrumb is a Laravel package designed to simplify the creation of breadcrumbs in your Laravel applications.
+LaraBreadcrumb is a Laravel package that simplifies the creation of breadcrumbs in Laravel applications.
 
 __NOTE__
 
-This was my first try of using a laravel containers and services. If you have any suggestions, please let me know,
-I'd like to improve this code.
+This was my first attempt at using Laravel containers and services. If you have any suggestions for improvement, please
+let me know.
 
 [![Laravel Version](https://img.shields.io/static/v1?label=laravel&message=%E2%89%A510.0&color=0078BE&logo=laravel)](https://laravel.com)
 [![Version](http://poser.pugx.org/bored-programmers/larabreadcrumb/version)](https://packagist.org/packages/bored-programmers/larabreadcrumb)
@@ -21,8 +21,10 @@ I'd like to improve this code.
     - [Displaying Breadcrumbs](#displaying-breadcrumbs)
     - [Customizing Breadcrumbs](#customizing-breadcrumbs)
     - [Prefixing Breadcrumbs](#prefixing-breadcrumbs)
-    - [Hide Breadcrumbs](#hide-breadcrumbs)
-    - [Publishing views](#publishing-views)
+    - [Hiding Breadcrumbs](#hiding-breadcrumbs)
+    - [Disabling Breadcrumbs](#disabling-breadcrumbs)
+    - [Translating Breadcrumbs](#translating-breadcrumbs)
+    - [Publishing Views](#publishing-views)
 - [Contributing](#contributing)
 - [Changelog](#changelog)
 - [License](#license)
@@ -45,10 +47,9 @@ composer require bored-programmers/larabreadcrumb
 
 ## Basic Usage
 
-By default, LaraBreadcrumb will try to generate breadcrumbs automatically based on the route.
-It will use the route parameter values as the title of the breadcrumb.
-So for example, if you have a route like this: `admin/customers/1`, it will generate a breadcrumb like this:
-`Admin / Customers / 1`.
+By default, LaraBreadcrumb generates breadcrumbs automatically based on the route.
+It uses the route parameter values as the breadcrumb titles. For example, for a route like `admin/customers/1`,
+it generates a breadcrumb like this: `Admin / Customers / 1`.
 
 ### Displaying Breadcrumbs
 
@@ -58,10 +59,8 @@ So for example, if you have a route like this: `admin/customers/1`, it will gene
 
 ### Customizing Breadcrumbs
 
-`Route::get('/users/{customer}')`
-
-This route will generate a breadcrumb like this: `Users / 1`.
-If you want to customize the breadcrumb, you can use the `BreadcrumbService` class like this:
+For a route like `Route::get('/users/{customer}')`, LaraBreadcrumb generates a breadcrumb like this: `Users / 1`.
+To customize the breadcrumb, you can use the `BreadcrumbService` class:
 
 ```php
 use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
@@ -75,10 +74,10 @@ BreadcrumbService::update()
 ])
 ```
 
-This will generate a breadcrumb like this: `Users / John`. Key `customer` is the name of the route parameter, value is
-the accessor. You can use a closure or a string.
+This generates a breadcrumb like this: `Users / John`. The key `customer` is the name of the route parameter, and the
+value is the accessor. You can use a closure or a string.
 
-Or you can add single accessor like this:
+You can also add a single accessor conditionally:
 
 ```php
 use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
@@ -98,12 +97,9 @@ if (true) {
 }
 ```
 
-This is helpful when you want to add an accessor conditionally.
-
 ### Prefixing Breadcrumbs
 
-By default, breadcrumb doesn't have any prefix. If you want to add a prefix to the breadcrumb, you can use the
-`BreadcrumbService` class like this:
+By default, breadcrumbs don't have a prefix. To add a prefix to the breadcrumbs, use the `BreadcrumbService` class:
 
 ```php
 use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
@@ -115,15 +111,15 @@ BreadcrumbService::update()
 ])
 ```
 
-This will generate a breadcrumb like this: `breadcrumb.users / 1 / breadcrumb.comments / 1`. <br><br>
-**It is recommended to use a prefix when using translation**, because it will prevent conflicts. <br>
-For example if you have route
-`Route::get('admin/users')`, it will generate a breadcrumb like this: `admin / users`. It is not a problem, until you
-have translation file `admin.php`. Then it will give you an error `array to string conversion`.
+This generates a breadcrumb like this: `breadcrumb.users / 1 / breadcrumb.comments / 1`.
 
-### Hide Breadcrumbs
+**Note:** It's recommended to use a prefix when using translation to prevent conflicts. For example, for a route
+like `Route::get('admin/users')`, it generates a breadcrumb like this: `admin / users`. This isn't a problem until you
+have a translation file `admin.php`. Then it gives you an error `array to string conversion`.
 
-You can also hide certain breadcrumbs.
+### Hiding Breadcrumbs
+
+You can hide certain breadcrumbs:
 
 ```php
 use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
@@ -134,10 +130,10 @@ use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
  $breadcrumbs = BreadcrumbService::update()->hide(['comments', 'users']);
 ```
 
-This will hide the `comments` from breadcrumb.
-The first result will be `Users / {user} / {comment}`, second will be `{user} / {comment}`.
+This hides the `comments` breadcrumb. The first result will be `Users / {user} / {comment}`, and the second will
+be `{user} / {comment}`.
 
-If you would like to dynamic segment, you must use curly braces `{}`.
+**To hide dynamic segments, use curly braces `{}`:**
 
 ```php
 use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
@@ -148,13 +144,14 @@ use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
  $breadcrumbs = BreadcrumbService::update()->hide(['{user}', '{comment}']);
 ```
 
-This will hide the dynamic segment from breadcrumb.
-The first result will be `Users / {user} / Comments`, second will be `Users / Comments`.
+This hides the dynamic segment from the breadcrumb. The first result will be `Users / {user} / Comments`, and the second
+will be `Users / Comments`.
 
-### Disable Breadcrumbs
+### Disabling Breadcrumbs
 
-You can also disable click on certain breadcrumbs. <br><br>
-_**NOTE: This will not hide the link, it will only disable the click event.**_
+You can disable click events on certain breadcrumbs.
+
+**Note:** This doesn't hide the link; it only disables the click event.
 
 ```php
 use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
@@ -165,10 +162,10 @@ use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
  $breadcrumbs = BreadcrumbService::update()->disable(['comments', 'users']);
 ```
 
-After this, you won't be able to click on `comments` breadcrumb in the first example and on `comments` and `users` in
-the second example.
+After this, you won't be able to click on the `comments` breadcrumb in the first example and on the `comments`
+and `users` breadcrumbs in the second example.
 
-If you would like to dynamic segment, you must use curly braces `{}`.
+To disable dynamic segments, use curly braces `{}`:
 
 ```php
 use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
@@ -179,15 +176,12 @@ use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
  $breadcrumbs = BreadcrumbService::update()->disable(['{user}', '{comment}']);
 ```
 
-After this, you won't be able to click on `comment` breadcrumb in the first example and on `user` and `comment` in
-the second example.
-
-You can add the translation options to the `README.md` file under a new section titled "Translating Breadcrumbs". Here's
-how you can do it:
+After this, you won't be able to click on the `comment` breadcrumb in the first example and on the `user` and `comment`
+breadcrumbs in the second example.
 
 ### Translating Breadcrumbs
 
-You can translate certain breadcrumbs or all breadcrumbs by default.
+You can translate certain breadcrumbs or all breadcrumbs by default:
 
 ```php
 use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
@@ -201,7 +195,7 @@ BreadcrumbService::update()->translateAll();
 ```
 
 If you want to translate all breadcrumbs but don't want to translate certain segments, you can use the `dontTranslate`
-method.
+method:
 
 ```php
 use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
@@ -213,10 +207,10 @@ BreadcrumbService::update()->dontTranslate('users');
 BreadcrumbService::update()->dontTranslate(['users', 'comments']);
 ```
 
-This will ensure that the 'users' segment is not translated in the first example and 'users' and 'comments' segments are
-not translated in the second example, even if `translateAll` is set to `true`.
+This ensures that the 'users' segment isn't translated in the first example, and the 'users' and 'comments' segments
+aren't translated in the second example, even if translateAll is set to true.
 
-If you want to translate dynamic segments, you must use curly braces `{}`.
+If you want to translate dynamic segments, you must use curly braces {}.
 
 ```php
 use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
