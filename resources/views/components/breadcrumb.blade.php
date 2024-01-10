@@ -1,8 +1,3 @@
-@props([
-    /** @var \App\Services\BreadcrumbLink[] */
-    'breadcrumbs'
-])
-
 <div style="display: flex">
     @foreach (app(\BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService::class)->generate() as $breadcrumb)
         @php
