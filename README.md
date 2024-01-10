@@ -78,6 +78,28 @@ BreadcrumbService::update()
 This will generate a breadcrumb like this: `Users / John`. Key `customer` is the name of the route parameter, value is
 the accessor. You can use a closure or a string.
 
+Or you can add single accessor like this:
+
+```php
+use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
+
+BreadcrumbService::update()
+    ->setAccessors([
+        'customer' => fn($model) => $model->name
+        'customer' => fn(User $user) => $user->name
+        'customer' => 'name'
+    ]);
+])
+
+if (true) {
+  BreadcrumbService::update()
+      ->addAccessor('customer', fn($model) => $model->name);
+  ])
+}
+```
+
+This is helpful when you want to add an accessor conditionally.
+
 ### Prefixing Breadcrumbs
 
 By default, breadcrumb doesn't have any prefix. If you want to add a prefix to the breadcrumb, you can use the
@@ -93,8 +115,8 @@ BreadcrumbService::update()
 ])
 ```
 
-This will generate a breadcrumb like this: `breadcrumb.users / 1 / breadcrumb.comments / 1`.
-**It is recommended to use a prefix**, because it will prevent conflicts with translations.
+This will generate a breadcrumb like this: `breadcrumb.users / 1 / breadcrumb.comments / 1`. <br><br>
+**It is recommended to use a prefix when using translation**, because it will prevent conflicts. <br>
 For example if you have route
 `Route::get('admin/users')`, it will generate a breadcrumb like this: `admin / users`. It is not a problem, until you
 have translation file `admin.php`. Then it will give you an error `array to string conversion`.
@@ -104,6 +126,8 @@ have translation file `admin.php`. Then it will give you an error `array to stri
 You can also hide certain breadcrumbs.
 
 ```php
+use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
+
 // Route::get('/users/{user}/comments/{comment}');
 
  $breadcrumbs = BreadcrumbService::update()->hide('comments');
@@ -112,6 +136,51 @@ You can also hide certain breadcrumbs.
 
 This will hide the `comments` from breadcrumb.
 The first result will be `Users / {user} / {comment}`, second will be `{user} / {comment}`.
+
+If you would like to dynamic segment, you must use curly braces `{}`.
+
+```php
+use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
+
+// Route::get('/users/{user}/comments/{comment}');
+
+ $breadcrumbs = BreadcrumbService::update()->hide('{comment}');
+ $breadcrumbs = BreadcrumbService::update()->hide(['{user}', '{comment}']);
+```
+
+This will hide the dynamic segment from breadcrumb.
+The first result will be `Users / {user} / Comments`, second will be `Users / Comments`.
+
+### Disable Breadcrumbs
+
+You can also disable click on certain breadcrumbs. <br><br>
+_**NOTE: This will not hide the link, it will only disable the click event.**_
+
+```php
+use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
+
+// Route::get('/users/{user}/comments/{comment}');
+
+ $breadcrumbs = BreadcrumbService::update()->disable('comments');
+ $breadcrumbs = BreadcrumbService::update()->disable(['comments', 'users']);
+```
+
+After this, you won't be able to click on `comments` breadcrumb in the first example and on `comments` and `users` in
+the second example.
+
+If you would like to dynamic segment, you must use curly braces `{}`.
+
+```php
+use BoredProgrammers\LaraBreadcrumb\Service\BreadcrumbService;
+
+// Route::get('/users/{user}/comments/{comment}');
+
+ $breadcrumbs = BreadcrumbService::update()->disable('{comment}');
+ $breadcrumbs = BreadcrumbService::update()->disable(['{user}', '{comment}']);
+```
+
+After this, you won't be able to click on `comment` breadcrumb in the first example and on `user` and `comment` in
+the second example.
 
 ## Publishing views
 
