@@ -121,12 +121,13 @@ class BreadcrumbService
         }
 
         $disableSegment = in_array($segment, $this->disabledSegments);
+        $translateSegment = $this->isTranslatableSegment($segment);
         $segment = $this->processSegment($segment, $index, $parameters, $accumulatedUrl);
 
         return new BreadcrumbLink(
             title: $segment,
             url: $disableSegment ? null : $accumulatedUrl,
-            translate: $this->isTranslatableSegment($segment),
+            translate: $translateSegment,
         );
     }
 
